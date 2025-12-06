@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta http-equiv="Cache-Control" content="no-cache">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="Thu, 01 Jan 1970 00:00:00 GMT">
+
+  <title>Dice Trackr</title>
+  <link rel="icon" href="favicon.ico" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="app-header">
+    <div class="status">
+      <span class="badge">Dice Trackr</span>  
+      <span id="connStatus" class="badge">Connecting…</span>
+      <span id="timer" class="badge">:--</span>
+      <span id="phaseLabel" class="badge"></span>
+      <span id="roundLabel" class="badge"></span>
+    </div>
+  </header>
+
+  <main class="layout">
+    
+    <section class="panel player-panel">
+      <h2>Your Player</h2>
+      <form id="nameForm" class="name-form">
+        <input id="nameInput" maxlength="16" placeholder="Enter your name" />
+        <button type="submit">Set Name</button>
+      </form>
+      <div class="you">
+        <div><strong>Name:</strong> <span id="youName">—</span></div>
+        <div><strong>Total:</strong> <span id="youTotal">0</span></div>
+      </div>
+
+      <h3>Your Scorecard</h3>
+      <div id="scorecard" class="scorecard"></div>
+    </section>
+
+    <section class="panel board-panel">
+      <h2>Dice</h2>
+      <div class="dice-rows">
+        <div class="dice-row">
+          <div class="row-title">Phase 1</div>
+          <div id="row1" class="dice"></div>
+        </div>
+        <div class="dice-row">
+          <div class="row-title">Phase 2</div>
+          <div id="row2" class="dice"></div>
+        </div>
+        <div class="dice-row">
+          <div class="row-title">Phase 3</div>
+          <div id="row3" class="dice"></div>
+        </div>
+        <div class="dice-row final">
+          <div class="row-title">Your Kept Dice</div>
+          <div id="rowFinal" class="dice"></div>
+        </div>
+      </div>
+
+      <h2 id="categoryBanner">Choose Category</h2>
+      <h2 id="phaseBanner" class="phase-banner hidden">Choose Category Now!</h2>
+
+      <div id="categories" class="categories"></div>
+      <p class="hint">You can only choose one category per round. If you don't pick in time, the round is skipped—no points added and no category used.</p>
+    </section>
+
+    <section class="panel right-panel">
+      <div class="leaderboard">
+        <h2>Leaderboard (Top 10)</h2>
+        <ol id="leaderList"></ol>
+      </div>
+      <div class="eventlog">
+        <h2>Game Event Log</h2>
+        <div id="events" class="events"></div>
+      </div>
+    </section>
+  </main>
+
+  <div id="winnerModal" class="modal hidden">
+    <div class="modal-body">
+      <h2 id="winnerTitle">Winner!</h2>
+      <p id="winnerText"></p>
+      <canvas id="confettiCanvas"></canvas>
+    </div>
+  </div>
+
+  <script src="client.js" defer></script>
+</body>
+</html>

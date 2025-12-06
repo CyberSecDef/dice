@@ -1,0 +1,180 @@
+:root{
+  /* Light palette */
+  --bg:#f6f7fb;
+  --panel:#ffffff;
+  --text:#0b1220;
+  --muted:#5f6b7a;
+  --accent:#2563eb;   /* blue */
+  --accent2:#9333ea;  /* purple */
+  --danger:#b91c1c;
+  --good:#047857;
+  --border:#e5e7eb;
+}
+
+*{ box-sizing:border-box; }
+html,body{ height:100%; margin:0; }
+body{
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+  background: linear-gradient(180deg,#fff,#f6f7fb);
+  color: var(--text);
+  padding-top: var(--app-header-h, 56px);
+}
+
+.app-header{
+  position: fixed;          /* was: sticky */
+  top: 0; left: 0; right: 0;
+  z-index: 1000;            /* stays above content, below modal */
+  padding-top: calc(12px + env(safe-area-inset-top)); /* notch-safe */
+  background:#fffffc;     /* (or your light theme) */
+  backdrop-filter: blur(6px);
+}
+
+h1{ margin:0; font-size:1.25rem; letter-spacing:0.2px; }
+.badge{
+  margin-left:8px; padding:4px 8px; border:1px solid var(--border);
+  border-radius:999px; font-size:0.8rem; color:var(--muted); background:#fff;
+}
+.layout{
+  display:grid; gap:12px; padding:12px; grid-template-columns: 280px 1fr 320px;
+}
+.panel{
+  background:var(--panel); border:1px solid var(--border); border-radius:10px; padding:12px;
+  box-shadow: 0 4px 18px rgba(0,0,0,0.06);
+}
+.player-panel .name-form{
+  display:flex; gap:8px; margin-bottom:10px;
+}
+.name-form input{
+  flex:1; padding:8px; border-radius:6px; border:1px solid var(--border); background:#fff; color:var(--text);
+}
+.name-form input::placeholder{ color:#9aa5b1; }
+.name-form button{
+  padding:8px 10px; background:var(--accent); color:#fff; border:none; border-radius:6px; cursor:pointer; font-weight:600;
+}
+.name-form button:hover{ filter:brightness(0.95); }
+.you div{ margin:4px 0; }
+.scorecard{
+  display:grid; grid-template-columns: 1fr auto; gap:6px; border-top:1px solid var(--border); padding-top:8px;
+}
+.scorecard .row{ display:contents; }
+.scorecard .cat{
+  padding:6px; background:#f8fafc; border:1px solid var(--border); border-radius:6px;
+}
+.scorecard .pts{
+  padding:6px; text-align:right; background:#f8fafc; border:1px solid var(--border); border-radius:6px;
+}
+.scorecard .used{ opacity:0.55; }
+.scorecard button.pick{
+  grid-column:1/-1; padding:8px; border:1px dashed var(--border); border-radius:6px; background:#f8fafc; color:var(--muted); cursor:pointer;
+}
+
+.board-panel .dice-rows{ display:grid; gap:10px; }
+.dice-row{ display:grid; grid-template-columns: 100px 1fr; align-items:center; gap:10px; height:44px;}
+.row-title{ color:var(--muted); }
+.dice{ display:flex; flex-wrap:wrap; gap:8px; }
+.die{
+  width:40px; height:40px; display:grid; place-items:center; border-radius:8px; border:1px solid var(--border);
+  background:#f3f4f6; font-weight:700; font-size:1.1rem; cursor:pointer; user-select:none;
+  transition: transform .08s ease, box-shadow .08s ease, border-color .08s ease, background .08s ease;
+}
+.die:hover{ background:#eef2ff; }
+.die.disabled{ opacity:0.45; cursor:not-allowed; filter:saturate(0.7); }
+.die.selected{
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(37,99,235,0.18);
+  transform: translateY(-2px);
+  background:#e8f0ff;
+}
+
+.categories{
+  display:grid; grid-template-columns: repeat(auto-fill,minmax(160px,1fr)); gap:8px; margin-top:8px;
+}
+.cat-btn{
+  padding:10px; border:1px solid var(--border); border-radius:8px; background:#ffffff; color:var(--text);
+  cursor:pointer; text-align:left; line-height:1.2;
+  transition:border-color .08s ease, box-shadow .12s ease, transform .04s ease;
+}
+.cat-btn:hover:not(.used){ border-color:var(--accent2); box-shadow:0 2px 10px rgba(0,0,0,0.06); }
+.cat-btn.used{ opacity:0.55; cursor:not-allowed; }
+
+/* Scoring phase banner */
+.phase-banner{
+  margin:6px 0 6px;
+  padding:8px 8px;
+  background:#ecfdf5;
+  border:1px solid #a7f3d0;
+  color:#065f46;
+  border-radius:4px;
+  font-weight:600;
+}
+.hidden{ display:none; }
+
+/* Body phase-specific styling */
+body[data-phase="4"] .board-panel .dice-rows{
+  opacity:0.85;
+  filter:saturate(0.95);
+}
+body[data-phase="4"] #phaseLabel{
+  color:#065f46;
+  border-color:#a7f3d0;
+  background:#ecfdf5;
+}
+
+/* Pulse categories to draw attention during scoring */
+@keyframes pulseGlow {
+  0%   { box-shadow: 0 0 0 0 rgba(147,51,234,0.22); }
+  70%  { box-shadow: 0 0 0 12px rgba(147,51,234,0.00); }
+  100% { box-shadow: 0 0 0 0 rgba(147,51,234,0.00); }
+}
+body[data-phase="4"] .cat-btn:not(.used){
+  border-color: var(--accent2);
+  animation: pulseGlow 1.6s ease-out infinite;
+}
+
+/* Leaderboard + Events */
+.leaderboard ol{ margin:0; padding-left:18px; }
+.leaderboard li{ padding:2px 0; }
+.eventlog .events{
+  height:280px; overflow:auto; padding:8px; background:#f8fafc; border:1px solid var(--border); border-radius:8px;
+  font-size:0.9rem;
+}
+.event{ margin-bottom:6px; color:#1f2937; }
+.event time{ color:var(--muted); margin-right:8px; font-size:0.8rem; }
+
+/* Modal */
+.modal{
+  position:fixed; inset:0; background:rgba(0,0,0,0.45); display:flex; align-items:center; justify-content:center;
+}
+.modal-body{
+  position:relative; width:min(720px,95vw); padding:24px; background:#fff; border:1px solid var(--border); border-radius:12px;
+  text-align:center; color:var(--text);
+}
+.modal-body h2{ margin-top:0; }
+#confettiCanvas{ position:absolute; inset:0; width:100%; height:100%; pointer-events:none; }
+/* Ensure hidden wins over modal's display:flex */
+.modal.hidden { display: none !important; }
+
+.status {
+    background:#fff;
+    min-height:30px;
+    border-bottom: 1px solid #9aa5b1;
+}
+/* Connection status coloring in light mode */
+.status .badge#connStatus.connected{
+  color: var(--good);
+  border-color: #a7f3d0;
+  background:#ecfdf5;
+}
+.status .badge#connStatus.lost{
+  color: var(--danger);
+  border-color: #fecaca;
+  background:#fef2f2;
+}
+
+/* Responsive */
+@media (max-width: 1100px){
+  .layout{ grid-template-columns: 1fr; }
+  .right-panel{ order:3; }
+  .board-panel{ order:2; }
+  .player-panel{ order:1; }
+}
