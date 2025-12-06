@@ -1,4 +1,4 @@
-# Yahtzee-Line (Express + WebSockets)
+# Dice Poker Game (Express + WebSockets)
 
 Massively-multiplayer Yahtzee-line variant with timed phases, reconnection persistence, leaderboard, and event log.
 
